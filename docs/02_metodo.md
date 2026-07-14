@@ -1,10 +1,5 @@
 # Método
 
-*Rascunho, 2026-07-13. Texto corrido para aproveitamento direto no artigo —
-complementa (não substitui) `01_desenho_pesquisa.md`, que registra as
-decisões e o histórico de discussão. Seções marcadas "[EM ANDAMENTO]" serão
-completadas quando os resultados correspondentes saírem.*
-
 ## Fonte de dados
 
 Os dados foram coletados diretamente da API do OpenAlex
@@ -117,10 +112,10 @@ suficiente (título + resumo, 2014–2020):
   documentos não agrupados pelo HDBSCAN (tópico -1, 56.661 artigos, 47% do
   corpus).
 - **LDA (Latent Dirichlet Allocation)** [CONCLUÍDO 14/07/2026], via pacote
-  `topicmodels` em R — mesmo método empregado no artigo Q1 da tese de
-  doutorado da autora, adotado por continuidade metodológica.
-  Bag-of-words sobre o corpus após remoção de stopwords em inglês e
-  português; k = 20 tópicos. Vocabulário reduzido de 50.016 para 18.096
+  `topicmodels` em R — mesmo método empregado no artigo Q1 "**Tendências e desafios
+  na avaliação de   impacto da pesquisa agrícola: uma revisão sistemática da literatura**,
+  adotado por continuidade metodológica. Bag-of-words sobre o corpus após remoção de stopwords
+  em inglês e português; k = 20 tópicos. Vocabulário reduzido de 50.016 para 18.096
   termos (min_docfreq de 10 para 50 documentos) após a primeira tentativa
   não convergir em tempo viável (>2h15 sem terminar, interrompida); mesmo
   reduzido, o ajuste final levou 475 min (~7h55) — ordem de grandeza maior

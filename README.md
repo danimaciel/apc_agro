@@ -1,10 +1,10 @@
 # apc_agro
 
-Artigo sobre acesso aberto e avaliação da pesquisa na área agrícola, mapeando
+Estudo sobre acesso aberto e avaliação da pesquisa na área agrícola, mapeando
 periódicos/estudos para posicioná-los quanto à cobrança de APC (*Article
 Processing Charge*).
 
-Fonte de dados principal prevista: [OpenAlex](https://openalex.org/) (via API).
+Fonte de dados principal utilizada: [OpenAlex](https://openalex.org/) (via API).
 
 ## Estrutura
 
@@ -20,6 +20,6 @@ apc_agro/
 
 ## Status
 
-Projeto em fase de desenho. As decisões sobre estratégia de mapeamento,
-temporalidade, foco (unidade de análise) e método ainda estão em aberto —
+Projeto em fase de desenvolvimento. As decisões sobre estratégia de mapeamento,
+temporalidade, foco (unidade de análise) e método foram definidas, mas podem sofrer alterações —
 ver [`docs/01_desenho_pesquisa.md`](docs/01_desenho_pesquisa.md).

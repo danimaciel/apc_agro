@@ -52,6 +52,8 @@ for (i in seq_along(batches)) {
 cat("total de periodicos retornados pela API:", length(all_sources), "\n")
 
 sources_df <- bind_rows(lapply(all_sources, function(s) {
+  issn_list <- s$issn
+  stats <- s$summary_stats
   data.frame(
     source_id = s$id %||% NA_character_,
     display_name_api = s$display_name %||% NA_character_,
@@ -63,6 +65,12 @@ sources_df <- bind_rows(lapply(all_sources, function(s) {
     host_organization_name = s$host_organization_name %||% NA_character_,
     oa_flip_year = (s$oa_flip_year %||% NA_integer_),
     works_count_total = (s$works_count %||% NA_integer_),
+    issn_l = s$issn_l %||% NA_character_,
+    issn_all = if (length(issn_list) > 0) paste(unlist(issn_list), collapse = "|") else NA_character_,
+    h_index = (stats[["h_index"]] %||% NA_integer_),
+    i10_index = (stats[["i10_index"]] %||% NA_integer_),
+    citedness_2yr = (stats[["2yr_mean_citedness"]] %||% NA_real_),
+    homepage_url = s$homepage_url %||% NA_character_,
     stringsAsFactors = FALSE
   )
 }))

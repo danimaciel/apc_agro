@@ -1,0 +1,277 @@
+<meta charset="utf-8">
+<title>Onde publicar — periódicos de agro</title>
+<style>
+  :root {
+    --bg: #f2f0e6; --bg-raised: #fbfaf5; --ink: #201f18; --ink-soft: #5a5748;
+    --ink-faint: #8a8672; --line: #dedac8; --accent: #33562e; --accent-soft: #e4e9dd;
+    --gold: #b3822c; --gold-soft: #f2e6cc; --diamond: #3f7a8c; --diamond-soft: #dfeced;
+    --hibrido: #8a4f5e; --hibrido-soft: #f0dfe2; --fechado: #706a5c; --fechado-soft: #e6e2d4;
+    --capes: #2f6f4e; --capes-soft: #dcece2;
+    --shadow: 0 1px 2px rgba(32,31,24,0.06), 0 6px 16px rgba(32,31,24,0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16180f; --bg-raised: #1f2216; --ink: #eae6d6; --ink-soft: #b7b19a;
+      --ink-faint: #7d7962; --line: #33362a; --accent: #7fae72; --accent-soft: #26301f;
+      --gold: #d9a648; --gold-soft: #33291a; --diamond: #6cb2c9; --diamond-soft: #172a30;
+      --hibrido: #cc8a9b; --hibrido-soft: #2e1f24; --fechado: #a19b87; --fechado-soft: #262418;
+      --capes: #6bbf94; --capes-soft: #1c2e23;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16180f; --bg-raised: #1f2216; --ink: #eae6d6; --ink-soft: #b7b19a;
+    --ink-faint: #7d7962; --line: #33362a; --accent: #7fae72; --accent-soft: #26301f;
+    --gold: #d9a648; --gold-soft: #33291a; --diamond: #6cb2c9; --diamond-soft: #172a30;
+    --hibrido: #cc8a9b; --hibrido-soft: #2e1f24; --fechado: #a19b87; --fechado-soft: #262418;
+    --capes: #6bbf94; --capes-soft: #1c2e23;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #f2f0e6; --bg-raised: #fbfaf5; --ink: #201f18; --ink-soft: #5a5748;
+    --ink-faint: #8a8672; --line: #dedac8; --accent: #33562e; --accent-soft: #e4e9dd;
+    --gold: #b3822c; --gold-soft: #f2e6cc; --diamond: #3f7a8c; --diamond-soft: #dfeced;
+    --hibrido: #8a4f5e; --hibrido-soft: #f0dfe2; --fechado: #706a5c; --fechado-soft: #e6e2d4;
+    --capes: #2f6f4e; --capes-soft: #dcece2;
+    --shadow: 0 1px 2px rgba(32,31,24,0.06), 0 6px 16px rgba(32,31,24,0.05);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 40px 24px 80px; }
+  h1, h2, h3 { font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; text-wrap: balance; margin: 0; }
+  .num { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; font-variant-numeric: tabular-nums; }
+
+  .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: var(--accent); font-weight: 600; }
+  h1 { font-size: 32px; font-weight: 600; margin-top: 6px; }
+  .lede { max-width: 68ch; color: var(--ink-soft); font-size: 15.5px; margin: 14px 0 28px; }
+  .lede a { color: var(--accent); }
+
+  /* search bar */
+  .search-card {
+    background: var(--bg-raised); border: 1px solid var(--line); border-radius: 14px;
+    padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px;
+  }
+  #q {
+    width: 100%; font-size: 17px; padding: 12px 14px; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+    font-family: inherit;
+  }
+  #q:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; align-items: center; }
+  .filters select {
+    font: inherit; font-size: 13.5px; padding: 7px 10px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  }
+  .togglechip {
+    font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 20px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink-soft);
+    cursor: pointer; transition: all 0.12s;
+  }
+  .togglechip.on { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); font-weight: 600; }
+  .catchip { display: inline-flex; align-items: center; gap: 5px; }
+  .catchip .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+  .resultbar { display: flex; justify-content: space-between; align-items: baseline; margin: 18px 0 10px; font-size: 13.5px; color: var(--ink-soft); }
+
+  /* results */
+  .rescard {
+    background: var(--bg-raised); border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px 18px; margin-bottom: 10px; display: flex; gap: 16px; align-items: center;
+    flex-wrap: wrap;
+  }
+  .rescard .main { flex: 1; min-width: 240px; }
+  .rescard .title { font-weight: 600; font-size: 15px; }
+  .rescard .title a { color: inherit; text-decoration: none; }
+  .rescard .title a:hover { text-decoration: underline; }
+  .rescard .sub { font-size: 12.5px; color: var(--ink-faint); margin-top: 3px; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+  .badge.gold { background: var(--gold-soft); color: var(--gold); }
+  .badge.diamond { background: var(--diamond-soft); color: var(--diamond); }
+  .badge.hibrido { background: var(--hibrido-soft); color: var(--hibrido); }
+  .badge.fechado { background: var(--fechado-soft); color: var(--fechado); }
+  .badge.capes { background: var(--capes-soft); color: var(--capes); }
+  .rescard .metrics { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .metric { text-align: center; min-width: 54px; }
+  .metric .v { font-size: 15px; font-weight: 700; }
+  .metric .l { font-size: 10.5px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.03em; }
+  .apc-cell { text-align: right; min-width: 92px; }
+  .apc-cell .price { font-weight: 700; font-size: 14px; }
+  .apc-cell .price.waived { text-decoration: line-through; color: var(--ink-faint); font-weight: 500; font-size: 12.5px; }
+  .apc-cell .capes-note { font-size: 11px; color: var(--capes); font-weight: 600; }
+
+  .empty { text-align: center; padding: 60px 20px; color: var(--ink-faint); }
+
+  footer { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 30px; font-size: 12.5px; color: var(--ink-faint); }
+
+  @media (max-width: 640px) {
+    .rescard { flex-direction: column; align-items: stretch; }
+    .apc-cell { text-align: left; }
+  }
+</style>
+
+<div class="wrap">
+  <h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">
+    Ferramenta de busca de periódicos agrícolas por custo de publicação, cobertura de acordo CAPES e impacto de citação.
+  </h2>
+
+  <div class="eyebrow">apc_agro · ferramenta</div>
+  <h1>Onde publicar</h1>
+  <p class="lede">
+    8.848 periódicos da área agrícola onde autores brasileiros já publicaram (2014–2024), com custo real
+    de publicação — incluindo os casos em que o APC aparece cobrado, mas é coberto pelos
+    <a href="https://www.periodicos.capes.gov.br/index.php/acessoaberto/acordos-transformativos.html" target="_blank" rel="noreferrer">acordos transformativos da CAPES</a>
+    (Springer Nature, Elsevier), tornando a publicação gratuita para o autor vinculado.
+  </p>
+
+  <div class="search-card">
+    <input type="text" id="q" placeholder="Buscar por nome do periódico ou ISSN..." autocomplete="off">
+    <div class="filters">
+      <select id="subfield-filter"><option value="">Todas as áreas</option></select>
+      <button type="button" class="togglechip catchip" data-cat="Diamond"><span class="dot" style="background:var(--diamond)"></span>Diamond</button>
+      <button type="button" class="togglechip catchip" data-cat="Gold"><span class="dot" style="background:var(--gold)"></span>Gold</button>
+      <button type="button" class="togglechip catchip" data-cat="Híbrido"><span class="dot" style="background:var(--hibrido)"></span>Híbrido</button>
+      <button type="button" class="togglechip catchip" data-cat="Fechado"><span class="dot" style="background:var(--fechado)"></span>Fechado</button>
+      <button type="button" class="togglechip" id="only-free">💚 só sem custo pro autor</button>
+      <select id="sort-by">
+        <option value="popularidade">Ordenar: mais usados por autores BR</option>
+        <option value="citacao">Ordenar: mais citados (h-index)</option>
+        <option value="apc_asc">Ordenar: menor APC</option>
+        <option value="nome">Ordenar: A–Z</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="resultbar">
+    <span id="result-count"></span>
+    <span id="result-note"></span>
+  </div>
+
+  <div id="results"></div>
+  <div class="empty" id="empty-state" style="display:none;">Nenhum periódico encontrado com esses filtros.</div>
+
+  <footer>
+    <p><strong>Fonte:</strong> OpenAlex API (CC0) + Portal de Periódicos CAPES (acordos transformativos, consultados em julho de 2026). "Sem custo pro autor" combina periódicos Diamond/Fechado (não cobram APC por definição) com periódicos Gold/Híbrido cobertos por acordo CAPES (cobram APC de outros autores, mas não do vinculado a instituição brasileira participante).</p>
+    <p>Projeto <a href="https://github.com/danimaciel/apc_agro" target="_blank" rel="noreferrer">apc_agro</a> — mapeamento de acesso aberto na produção agrícola brasileira.</p>
+  </footer>
+</div>
+
+<script src="dados_ferramenta.js"></script>
+<script>
+(function () {
+  var DATA = window.__FERRAMENTA_DATA__ || [];
+  var CAT_COLOR = { Diamond: 'diamond', Gold: 'gold', "Híbrido": 'hibrido', Fechado: 'fechado' };
+
+  var activeCats = new Set();
+  var onlyFree = false;
+  var subfieldSel = document.getElementById('subfield-filter');
+
+  // populate subfield filter
+  var subfields = Array.from(new Set(DATA.map(function (d) { return d.subfield; }).filter(Boolean))).sort();
+  subfields.forEach(function (sf) {
+    var o = document.createElement('option');
+    o.value = sf; o.textContent = sf;
+    subfieldSel.appendChild(o);
+  });
+
+  function isFree(d) {
+    return d.categoria === 'Diamond' || d.categoria === 'Fechado' || d.capes;
+  }
+
+  function matches(d, q) {
+    if (activeCats.size > 0 && !activeCats.has(d.categoria)) return false;
+    if (onlyFree && !isFree(d)) return false;
+    if (subfieldSel.value && d.subfield !== subfieldSel.value) return false;
+    if (q) {
+      var hay = (d.titulo + ' ' + (d.issn || '')).toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  }
+
+  function sortFn(a, b, mode) {
+    if (mode === 'citacao') return (b.h_index || 0) - (a.h_index || 0);
+    if (mode === 'apc_asc') {
+      var ea = isFree(a), eb = isFree(b);
+      if (ea !== eb) return ea ? -1 : 1;
+      return (a.apc_usd || 999999) - (b.apc_usd || 999999);
+    }
+    if (mode === 'nome') return a.titulo.localeCompare(b.titulo);
+    return (b.n_artigos_corpus || 0) - (a.n_artigos_corpus || 0);
+  }
+
+  var MAX_RENDER = 120;
+
+  function render() {
+    var q = document.getElementById('q').value.trim().toLowerCase();
+    var mode = document.getElementById('sort-by').value;
+    var filtered = DATA.filter(function (d) { return matches(d, q); });
+    filtered.sort(function (a, b) { return sortFn(a, b, mode); });
+
+    var total = filtered.length;
+    document.getElementById('result-count').textContent = total.toLocaleString('pt-BR') + ' periódico' + (total === 1 ? '' : 's') + ' encontrado' + (total === 1 ? '' : 's');
+    document.getElementById('result-note').textContent = total > MAX_RENDER ? 'mostrando os ' + MAX_RENDER + ' primeiros — refine a busca para ver mais' : '';
+
+    var container = document.getElementById('results');
+    container.innerHTML = '';
+    document.getElementById('empty-state').style.display = total === 0 ? 'block' : 'none';
+
+    filtered.slice(0, MAX_RENDER).forEach(function (d) {
+      var card = document.createElement('div');
+      card.className = 'rescard';
+
+      var free = isFree(d);
+      var apcHtml;
+      if (d.categoria === 'Diamond' || d.categoria === 'Fechado') {
+        apcHtml = '<div class="price">Sem custo</div>';
+      } else if (d.capes) {
+        apcHtml = '<div class="price waived">US$ ' + (d.apc_usd != null ? d.apc_usd.toLocaleString('pt-BR') : '—') + '</div>' +
+                  '<div class="capes-note">✓ CAPES (' + d.capes_editora + ')</div>';
+      } else {
+        apcHtml = '<div class="price">US$ ' + (d.apc_usd != null ? d.apc_usd.toLocaleString('pt-BR') : '—') + '</div>';
+      }
+
+      var homepageLink = d.homepage ? '<a href="' + d.homepage + '" target="_blank" rel="noreferrer">' + d.titulo + '</a>' : d.titulo;
+
+      card.innerHTML =
+        '<div class="main">' +
+          '<div class="title">' + homepageLink + '</div>' +
+          '<div class="sub">' + (d.subfield || 'Área não classificada') +
+            (d.issn ? ' · ISSN ' + d.issn : '') +
+            (d.doaj ? ' · DOAJ' : '') + (d.scielo ? ' · SciELO' : '') + '</div>' +
+        '</div>' +
+        '<span class="badge ' + CAT_COLOR[d.categoria] + '">' + d.categoria + '</span>' +
+        '<div class="metrics">' +
+          '<div class="metric"><div class="v num">' + (d.h_index != null ? d.h_index : '—') + '</div><div class="l">h-index</div></div>' +
+          '<div class="metric"><div class="v num">' + (d.n_artigos_corpus != null ? d.n_artigos_corpus : '—') + '</div><div class="l">uso BR</div></div>' +
+        '</div>' +
+        '<div class="apc-cell">' + apcHtml + '</div>';
+      container.appendChild(card);
+    });
+  }
+
+  document.getElementById('q').addEventListener('input', render);
+  document.getElementById('subfield-filter').addEventListener('change', render);
+  document.getElementById('sort-by').addEventListener('change', render);
+  document.querySelectorAll('.catchip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var cat = chip.dataset.cat;
+      if (activeCats.has(cat)) { activeCats.delete(cat); chip.classList.remove('on'); }
+      else { activeCats.add(cat); chip.classList.add('on'); }
+      render();
+    });
+  });
+  document.getElementById('only-free').addEventListener('click', function () {
+    onlyFree = !onlyFree;
+    this.classList.toggle('on', onlyFree);
+    render();
+  });
+
+  render();
+})();
+</script>

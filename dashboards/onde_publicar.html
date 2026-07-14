@@ -121,12 +121,12 @@
   </h2>
 
   <div class="eyebrow">apc_agro · ferramenta</div>
-  <h1>Onde publicar</h1>
+  <h1>Onde publicar sem pagar</h1>
   <p class="lede">
-    8.848 periódicos da área agrícola onde autores brasileiros já publicaram (2014–2024), com custo real
-    de publicação — incluindo os casos em que o APC aparece cobrado, mas é coberto pelos
-    <a href="https://www.periodicos.capes.gov.br/index.php/acessoaberto/acordos-transformativos.html" target="_blank" rel="noreferrer">acordos transformativos da CAPES</a>
-    (Springer Nature, Elsevier), tornando a publicação gratuita para o autor vinculado.
+    Só periódicos de agro onde publicar em acesso aberto <strong>não custa nada</strong> para um autor
+    vinculado a instituição brasileira: periódicos Diamond (nunca cobram APC) e periódicos Gold/Híbrido
+    cobertos pelos <a href="https://www.periodicos.capes.gov.br/index.php/acessoaberto/acordos-transformativos.html" target="_blank" rel="noreferrer">acordos transformativos da CAPES</a>
+    (Springer Nature, Elsevier) — que cobram APC de outros autores, mas não do vinculado.
   </p>
 
   <div class="search-card">
@@ -134,14 +134,11 @@
     <div class="filters">
       <select id="subfield-filter"><option value="">Todas as áreas</option></select>
       <button type="button" class="togglechip catchip" data-cat="Diamond"><span class="dot" style="background:var(--diamond)"></span>Diamond</button>
-      <button type="button" class="togglechip catchip" data-cat="Gold"><span class="dot" style="background:var(--gold)"></span>Gold</button>
-      <button type="button" class="togglechip catchip" data-cat="Híbrido"><span class="dot" style="background:var(--hibrido)"></span>Híbrido</button>
-      <button type="button" class="togglechip catchip" data-cat="Fechado"><span class="dot" style="background:var(--fechado)"></span>Fechado</button>
-      <button type="button" class="togglechip" id="only-free">💚 só sem custo pro autor</button>
+      <button type="button" class="togglechip catchip" data-cat="Gold"><span class="dot" style="background:var(--gold)"></span>Gold (via CAPES)</button>
+      <button type="button" class="togglechip catchip" data-cat="Híbrido"><span class="dot" style="background:var(--hibrido)"></span>Híbrido (via CAPES)</button>
       <select id="sort-by">
         <option value="popularidade">Ordenar: mais usados por autores BR</option>
         <option value="citacao">Ordenar: mais citados (h-index)</option>
-        <option value="apc_asc">Ordenar: menor APC</option>
         <option value="nome">Ordenar: A–Z</option>
       </select>
     </div>
@@ -156,7 +153,7 @@
   <div class="empty" id="empty-state" style="display:none;">Nenhum periódico encontrado com esses filtros.</div>
 
   <footer>
-    <p><strong>Fonte:</strong> OpenAlex API (CC0) + Portal de Periódicos CAPES (acordos transformativos, consultados em julho de 2026). "Sem custo pro autor" combina periódicos Diamond/Fechado (não cobram APC por definição) com periódicos Gold/Híbrido cobertos por acordo CAPES (cobram APC de outros autores, mas não do vinculado a instituição brasileira participante).</p>
+    <p><strong>Fonte:</strong> OpenAlex API (CC0) + Portal de Periódicos CAPES (acordos transformativos, consultados em julho de 2026). Lista restrita a periódicos Diamond (nunca cobram APC) e periódicos Gold/Híbrido cobertos por acordo CAPES — não inclui periódicos Fechado (sem opção de acesso aberto) nem Gold/Híbrido sem cobertura (custam do bolso do autor). Para ver o panorama completo com todas as categorias, veja o <a href="painel_apc.html">painel</a>.</p>
     <p>Projeto <a href="https://github.com/danimaciel/apc_agro" target="_blank" rel="noreferrer">apc_agro</a> — mapeamento de acesso aberto na produção agrícola brasileira.</p>
   </footer>
 </div>
@@ -164,11 +161,14 @@
 <script src="dados_ferramenta.js"></script>
 <script>
 (function () {
-  var DATA = window.__FERRAMENTA_DATA__ || [];
+  function isFree(d) {
+    return d.categoria === 'Diamond' || d.capes === true;
+  }
+
+  var DATA = (window.__FERRAMENTA_DATA__ || []).filter(isFree);
   var CAT_COLOR = { Diamond: 'diamond', Gold: 'gold', "Híbrido": 'hibrido', Fechado: 'fechado' };
 
   var activeCats = new Set();
-  var onlyFree = false;
   var subfieldSel = document.getElementById('subfield-filter');
 
   // populate subfield filter
@@ -179,13 +179,8 @@
     subfieldSel.appendChild(o);
   });
 
-  function isFree(d) {
-    return d.categoria === 'Diamond' || d.categoria === 'Fechado' || d.capes;
-  }
-
   function matches(d, q) {
     if (activeCats.size > 0 && !activeCats.has(d.categoria)) return false;
-    if (onlyFree && !isFree(d)) return false;
     if (subfieldSel.value && d.subfield !== subfieldSel.value) return false;
     if (q) {
       var hay = (d.titulo + ' ' + (d.issn || '')).toLowerCase();
@@ -196,11 +191,6 @@
 
   function sortFn(a, b, mode) {
     if (mode === 'citacao') return (b.h_index || 0) - (a.h_index || 0);
-    if (mode === 'apc_asc') {
-      var ea = isFree(a), eb = isFree(b);
-      if (ea !== eb) return ea ? -1 : 1;
-      return (a.apc_usd || 999999) - (b.apc_usd || 999999);
-    }
     if (mode === 'nome') return a.titulo.localeCompare(b.titulo);
     return (b.n_artigos_corpus || 0) - (a.n_artigos_corpus || 0);
   }
@@ -225,15 +215,12 @@
       var card = document.createElement('div');
       card.className = 'rescard';
 
-      var free = isFree(d);
       var apcHtml;
-      if (d.categoria === 'Diamond' || d.categoria === 'Fechado') {
+      if (d.categoria === 'Diamond') {
         apcHtml = '<div class="price">Sem custo</div>';
-      } else if (d.capes) {
+      } else {
         apcHtml = '<div class="price waived">US$ ' + (d.apc_usd != null ? d.apc_usd.toLocaleString('pt-BR') : '—') + '</div>' +
                   '<div class="capes-note">✓ CAPES (' + d.capes_editora + ')</div>';
-      } else {
-        apcHtml = '<div class="price">US$ ' + (d.apc_usd != null ? d.apc_usd.toLocaleString('pt-BR') : '—') + '</div>';
       }
 
       var homepageLink = d.homepage ? '<a href="' + d.homepage + '" target="_blank" rel="noreferrer">' + d.titulo + '</a>' : d.titulo;
@@ -266,12 +253,6 @@
       render();
     });
   });
-  document.getElementById('only-free').addEventListener('click', function () {
-    onlyFree = !onlyFree;
-    this.classList.toggle('on', onlyFree);
-    render();
-  });
-
   render();
 })();
 </script>

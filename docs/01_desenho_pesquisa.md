@@ -26,7 +26,7 @@ Estudo em duas camadas, com arquitetura de coleta distinta para cada uma
 Corporation`, id `I199691007`, ROR `0482b5b22`, tipo `government`. 66.563
 artigos no total; 29.321 em 2015–2024 (unidades específicas, ex. "Embrapa
 Cassava & Fruits", aparecem como institutions separadas mas com produção
-própria registrada como 0 — toda a produção fica sob o id guarda-chuva).
+própria registrada como 0; toda a produção fica sob o id guarda-chuva).
 
 **Ainda a definir**: lista final de subfields que entram no recorte
 "agrícola". O field 11 tem 11 subfields; destes, 3 são mais "biologia pura"

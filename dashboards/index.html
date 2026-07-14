@@ -1,0 +1,101 @@
+<meta charset="utf-8">
+<title>apc_agro</title>
+<style>
+  :root {
+    --bg: #f2f0e6; --bg-raised: #fbfaf5; --ink: #201f18; --ink-soft: #5a5748;
+    --ink-faint: #8a8672; --line: #dedac8; --accent: #33562e; --accent-soft: #e4e9dd;
+    --gold: #b3822c; --diamond: #3f7a8c; --hibrido: #8a4f5e; --fechado: #706a5c;
+    --shadow: 0 1px 2px rgba(32,31,24,0.06), 0 6px 16px rgba(32,31,24,0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16180f; --bg-raised: #1f2216; --ink: #eae6d6; --ink-soft: #b7b19a;
+      --ink-faint: #7d7962; --line: #33362a; --accent: #7fae72; --accent-soft: #26301f;
+      --gold: #d9a648; --diamond: #6cb2c9; --hibrido: #cc8a9b; --fechado: #a19b87;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16180f; --bg-raised: #1f2216; --ink: #eae6d6; --ink-soft: #b7b19a;
+    --ink-faint: #7d7962; --line: #33362a; --accent: #7fae72; --accent-soft: #26301f;
+    --gold: #d9a648; --diamond: #6cb2c9; --hibrido: #cc8a9b; --fechado: #a19b87;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #f2f0e6; --bg-raised: #fbfaf5; --ink: #201f18; --ink-soft: #5a5748;
+    --ink-faint: #8a8672; --line: #dedac8; --accent: #33562e; --accent-soft: #e4e9dd;
+    --gold: #b3822c; --diamond: #3f7a8c; --hibrido: #8a4f5e; --fechado: #706a5c;
+    --shadow: 0 1px 2px rgba(32,31,24,0.06), 0 6px 16px rgba(32,31,24,0.05);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh; display: flex; align-items: center;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 60px 24px; width: 100%; }
+  h1, h2 { font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; text-wrap: balance; margin: 0; }
+  .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: var(--accent); font-weight: 600; }
+  h1 { font-size: 32px; font-weight: 600; margin-top: 6px; }
+  .lede { max-width: 60ch; color: var(--ink-soft); font-size: 15.5px; margin: 14px 0 36px; }
+
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--bg-raised); border: 1px solid var(--line); border-radius: 14px;
+    padding: 24px; box-shadow: var(--shadow); transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(32,31,24,0.1), 0 12px 24px rgba(32,31,24,0.08); }
+  .card .icon { font-size: 26px; margin-bottom: 12px; display: block; }
+  .card h2 { font-size: 19px; margin-bottom: 8px; }
+  .card p { font-size: 13.5px; color: var(--ink-soft); margin: 0; line-height: 1.5; }
+  .card .dots { display: flex; gap: 5px; margin-top: 14px; }
+  .card .dots span { width: 8px; height: 8px; border-radius: 50%; }
+
+  footer { margin-top: 36px; font-size: 12.5px; color: var(--ink-faint); }
+  footer a { color: var(--accent); }
+
+  @media (max-width: 620px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">apc_agro</div>
+  <h1>Acesso aberto na produção agrícola brasileira</h1>
+  <p class="lede">
+    Mapeamento de 193 mil artigos (2014–2024) e 8.848 periódicos para entender quem cobra
+    taxa de publicação (APC) na pesquisa agrícola brasileira, e onde a publicação em acesso
+    aberto sai de graça.
+  </p>
+
+  <div class="cards">
+    <a class="card" href="painel_apc.html">
+      <span class="icon">📊</span>
+      <h2>Panorama</h2>
+      <p>O retrato geral: evolução 2014–2024, mapa temático, quem paga por área de pesquisa.</p>
+      <div class="dots">
+        <span style="background:var(--diamond)"></span>
+        <span style="background:var(--gold)"></span>
+        <span style="background:var(--hibrido)"></span>
+        <span style="background:var(--fechado)"></span>
+      </div>
+    </a>
+    <a class="card" href="onde_publicar.html">
+      <span class="icon">🔎</span>
+      <h2>Onde publicar</h2>
+      <p>Busque e filtre periódicos por área, custo e cobertura de acordo CAPES antes de submeter.</p>
+      <div class="dots">
+        <span style="background:var(--diamond)"></span>
+        <span style="background:var(--gold)"></span>
+        <span style="background:var(--hibrido)"></span>
+        <span style="background:var(--fechado)"></span>
+      </div>
+    </a>
+  </div>
+
+  <footer>
+    Dados: OpenAlex (CC0) + Portal de Periódicos CAPES · <a href="https://github.com/danimaciel/apc_agro" target="_blank" rel="noreferrer">código no GitHub</a>
+  </footer>
+</div>

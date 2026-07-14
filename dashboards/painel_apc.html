@@ -95,9 +95,34 @@
   .sec-head h2 { font-size: 21px; }
   .sec-head .note { font-size: 13px; color: var(--ink-faint); }
 
-  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--ink-soft); margin-bottom: 14px; }
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 13px; color: var(--ink-soft); margin-bottom: 14px; }
   .legend .chip { display: inline-flex; align-items: center; gap: 6px; }
   .legend .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  /* clickable category filter */
+  button.chip {
+    font: inherit; color: var(--ink-soft); background: var(--bg-raised);
+    border: 1px solid var(--line); border-radius: 20px; padding: 5px 12px 5px 8px;
+    cursor: pointer; transition: opacity 0.15s, border-color 0.15s, background 0.15s;
+  }
+  button.chip:hover { border-color: var(--ink-faint); }
+  button.chip.cat-active { border-color: var(--ink); background: var(--accent-soft); color: var(--ink); }
+  [data-cat] { transition: opacity 0.18s ease; }
+  .cat-trigger { cursor: pointer; }
+  .catcard.cat-trigger { transition: opacity 0.18s ease, box-shadow 0.15s, transform 0.15s; }
+  .catcard.cat-trigger:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+  .catcard.cat-active { box-shadow: 0 0 0 2px var(--ink) inset; }
+
+  .filter-status {
+    display: none; align-items: center; gap: 10px; position: sticky; top: 12px; z-index: 10;
+    background: var(--ink); color: var(--bg); padding: 8px 8px 8px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 600; box-shadow: var(--shadow); width: fit-content; margin-bottom: 18px;
+  }
+  .filter-status.show { display: flex; }
+  .filter-status button {
+    font: inherit; font-weight: 600; background: rgba(127,127,127,0.25); border: none; color: inherit;
+    border-radius: 14px; padding: 4px 10px; cursor: pointer;
+  }
 
   /* category cards */
   .catgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -169,6 +194,11 @@
     </div>
   </header>
 
+  <div class="filter-status" id="filter-status">
+    <span>Filtrando: <strong id="filter-status-cat"></strong></span>
+    <button type="button" id="filter-clear">Limpar ×</button>
+  </div>
+
   <p class="lede">
     Todo periódico que publica pesquisa agrícola brasileira foi classificado em uma de quatro categorias,
     cruzando se é de acesso aberto (OA) com se cobra do autor para publicar
@@ -199,33 +229,34 @@
       <div class="note">periódico aberto × periódico cobra APC</div>
     </div>
     <div class="legend">
-      <span class="chip"><span class="dot" style="background:var(--diamond)"></span>Diamond - aberto, sem custo</span>
-      <span class="chip"><span class="dot" style="background:var(--gold)"></span>Gold — aberto, com APC</span>
-      <span class="chip"><span class="dot" style="background:var(--hibrido)"></span>Híbrido - fechado, com opção paga</span>
-      <span class="chip"><span class="dot" style="background:var(--fechado)"></span>Fechado - assinatura, sem opção aberta</span>
+      <button type="button" class="chip cat-trigger" data-cat="Diamond"><span class="dot" style="background:var(--diamond)"></span>Diamond - aberto, sem custo</button>
+      <button type="button" class="chip cat-trigger" data-cat="Gold"><span class="dot" style="background:var(--gold)"></span>Gold — aberto, com APC</button>
+      <button type="button" class="chip cat-trigger" data-cat="Híbrido"><span class="dot" style="background:var(--hibrido)"></span>Híbrido - fechado, com opção paga</button>
+      <button type="button" class="chip cat-trigger" data-cat="Fechado"><span class="dot" style="background:var(--fechado)"></span>Fechado - assinatura, sem opção aberta</button>
     </div>
     <div class="catgrid">
-      <div class="catcard diamond">
+      <div class="catcard diamond cat-trigger" data-cat="Diamond">
         <div class="name">Diamond</div>
         <div class="big num">39,6%</div>
         <div class="small">64.809 artigos · 4.032 periódicos</div>
       </div>
-      <div class="catcard gold">
+      <div class="catcard gold cat-trigger" data-cat="Gold">
         <div class="name">Gold</div>
         <div class="big num">23,8%</div>
         <div class="small">38.959 artigos · 1.028 periódicos</div>
       </div>
-      <div class="catcard hibrido">
+      <div class="catcard hibrido cat-trigger" data-cat="Híbrido">
         <div class="name">Híbrido</div>
         <div class="big num">19,5%</div>
         <div class="small">31.816 artigos · 1.377 periódicos</div>
       </div>
-      <div class="catcard fechado">
+      <div class="catcard fechado cat-trigger" data-cat="Fechado">
         <div class="name">Fechado</div>
         <div class="big num">17,1%</div>
         <div class="small">27.987 artigos · 2.411 periódicos</div>
       </div>
     </div>
+    <p style="font-size:12.5px; color:var(--ink-faint); margin-top:10px;">Clique numa categoria para destacá-la em todos os gráficos da página.</p>
   </section>
 
   <section>
@@ -261,10 +292,10 @@
       <div class="note">BERTopic, 11 anos completos · 62 tópicos · top 15 por volume</div>
     </div>
     <div class="legend">
-      <span class="chip"><span class="dot" style="background:var(--diamond)"></span>Diamond</span>
-      <span class="chip"><span class="dot" style="background:var(--gold)"></span>Gold</span>
-      <span class="chip"><span class="dot" style="background:var(--hibrido)"></span>Híbrido</span>
-      <span class="chip"><span class="dot" style="background:var(--fechado)"></span>Fechado</span>
+      <button type="button" class="chip cat-trigger" data-cat="Diamond"><span class="dot" style="background:var(--diamond)"></span>Diamond</button>
+      <button type="button" class="chip cat-trigger" data-cat="Gold"><span class="dot" style="background:var(--gold)"></span>Gold</button>
+      <button type="button" class="chip cat-trigger" data-cat="Híbrido"><span class="dot" style="background:var(--hibrido)"></span>Híbrido</button>
+      <button type="button" class="chip cat-trigger" data-cat="Fechado"><span class="dot" style="background:var(--fechado)"></span>Fechado</button>
       <span class="chip">⬤ marcado = tema concentra biologia geral, não agro aplicado</span>
     </div>
     <div class="chart-card" style="padding-bottom:20px;">
@@ -356,7 +387,7 @@
       var y = yBase - cum - h;
       var rect = el('rect', {
         x: x0, y: y, width: bw, height: Math.max(h, 0),
-        fill: CAT_COLOR[cat], class: 'bar-tip'
+        fill: CAT_COLOR[cat], class: 'bar-tip', 'data-cat': cat
       });
       var title = el('title', {});
       title.textContent = cat + ' · ' + yr + ': ' + v.toLocaleString('pt-BR') + ' artigos';
@@ -392,6 +423,7 @@
   priceData.sort(function (a, b) { return a.apc - b.apc; }).forEach(function (d) {
     var row = document.createElement('div');
     row.className = 'price-row';
+    row.dataset.cat = d.cat;
     var pct = (d.apc / maxApc) * 100;
     row.innerHTML =
       '<div class="jname">' + d.journal + '</div>' +
@@ -411,7 +443,7 @@
   var table = document.getElementById('top-table');
   var thead = '<thead><tr><th>Categoria</th><th>Periódico</th><th style="text-align:right">Artigos</th><th style="text-align:right">APC</th></tr></thead>';
   var rows = topData.map(function (d) {
-    return '<tr><td><span class="badge ' + badgeClass[d.categoria_apc] + '">' + d.categoria_apc + '</span></td>' +
+    return '<tr data-cat="' + d.categoria_apc + '"><td><span class="badge ' + badgeClass[d.categoria_apc] + '">' + d.categoria_apc + '</span></td>' +
       '<td>' + d.journal + '</td>' +
       '<td class="n">' + d.n_artigos_corpus.toLocaleString('pt-BR') + '</td>' +
       '<td class="n">' + (d.apc_usd ? 'US$ ' + d.apc_usd.toLocaleString('pt-BR') : '—') + '</td></tr>';
@@ -427,7 +459,7 @@
     var row = document.createElement('div');
     row.style.cssText = 'display:flex; align-items:center; gap:12px; margin:9px 0; font-size:13px;';
     var segs = CAT_ORDER.map(function (cat) {
-      return '<div style="width:' + d[cat] + '%; background:' + CAT_COLOR[cat] + ';" title="' + cat + ': ' + d[cat] + '%"></div>';
+      return '<div data-cat="' + cat + '" style="width:' + d[cat] + '%; background:' + CAT_COLOR[cat] + ';" title="' + cat + ': ' + d[cat] + '%"></div>';
     }).join('');
     row.innerHTML =
       '<div style="width:250px; flex-shrink:0; color:var(--ink-soft); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' +
@@ -460,5 +492,34 @@
       '<td class="n">' + d.pct.toLocaleString('pt-BR') + '%</td></tr>';
   }).join('');
   subfieldTable.innerHTML = sfThead + '<tbody>' + sfRows + '</tbody>';
+
+  // --- filtro cruzado por categoria (clique destaca em todos os graficos) ---
+  var activeCategory = null;
+  var filterStatus = document.getElementById('filter-status');
+  var filterStatusCat = document.getElementById('filter-status-cat');
+
+  function applyFilter(cat) {
+    activeCategory = (activeCategory === cat) ? null : cat;
+
+    document.querySelectorAll('[data-cat]').forEach(function (elDim) {
+      var match = !activeCategory || elDim.dataset.cat === activeCategory;
+      elDim.style.opacity = match ? '1' : '0.15';
+    });
+    document.querySelectorAll('.cat-trigger').forEach(function (t) {
+      t.classList.toggle('cat-active', !!activeCategory && t.dataset.cat === activeCategory);
+    });
+
+    if (activeCategory) {
+      filterStatusCat.textContent = activeCategory;
+      filterStatus.classList.add('show');
+    } else {
+      filterStatus.classList.remove('show');
+    }
+  }
+
+  document.querySelectorAll('.cat-trigger').forEach(function (t) {
+    t.addEventListener('click', function () { applyFilter(t.dataset.cat); });
+  });
+  document.getElementById('filter-clear').addEventListener('click', function () { applyFilter(activeCategory); });
 })();
 </script>

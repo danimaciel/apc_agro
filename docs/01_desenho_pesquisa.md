@@ -13,12 +13,12 @@ brasileira, com o cenário global como pano de fundo comparativo.
 ### 1.1 Estrutura / recorte institucional
 Estudo em duas camadas, com arquitetura de coleta distinta para cada uma
 (ver 1.6):
-- **(A) Global** — campo "Agricultural and Biological Sciences" (OpenAlex
+- **(A) Global**: campo "Agricultural and Biological Sciences" (OpenAlex
   field id `11`) inteiro, qualquer país, tratado como pano de fundo/
   benchmark comparativo.
-- **(B) Núcleo Brasil/Embrapa** — subconjunto de artigos com afiliação
+- **(B) Núcleo Brasil/Embrapa**: subconjunto de artigos com afiliação
   brasileira (e, dentro dele, o subconjunto afiliado à Embrapa
-  especificamente) dentro do mesmo campo. B é comparado contra A — é essa
+  especificamente) dentro do mesmo campo. B é comparado contra A: é essa
   comparação que sustenta o argumento de equidade (Brasil está mais/menos
   exposto ao modelo pago do que a média mundial do campo?).
 
@@ -30,9 +30,9 @@ própria registrada como 0 — toda a produção fica sob o id guarda-chuva).
 
 **Ainda a definir**: lista final de subfields que entram no recorte
 "agrícola". O field 11 tem 11 subfields; destes, 3 são mais "biologia pura"
-do que "agrícola aplicado" — **Ecology, Evolution, Behavior and
-Systematics**, **Insect Science** e **Aquatic Science** — candidatos a
-excluir do recorte temático (a confirmar com Daniela). Os outros 8 (Plant
+do que "agrícola aplicado" (**Ecology, Evolution, Behavior and
+Systematics**, **Insect Science** e **Aquatic Science**) candidatos a
+excluir do recorte temático. Os outros 8 (Plant 
 Science, Food Science, General Agricultural and Biological Sciences,
 Agronomy and Crop Science, Soil Science, Animal Science and Zoology,
 Forestry, Horticulture) são núcleo agro sem dúvida.
@@ -60,7 +60,7 @@ pré-Plan S (2014–2017), que é o que permite mostrar o "antes/depois". Mantid
 **Nuance**: o Plan S não é um mandato global — cOAlition S é majoritariamente
 europeia (+ Wellcome Trust, Gates Foundation, OMS); financiadores brasileiros
 (CNPq, CAPES, FAPESP) não são signatários. Hipótese de trabalho: o
-Brasil/América Latina já tinha infraestrutura robusta de OA sem APC antes do
+Brasil/América Latina já tinha infraestrutura de OA sem APC antes do
 Plan S (SciELO, Redalyc, periódicos institucionais) — a inflexão pós-2018/
 2021 pode aparecer mais forte nos dados globais do que no recorte
 Brasil/Embrapa.
@@ -128,9 +128,6 @@ OpenAlex API, acesso direto confirmado (13/07/2026). Requisições incluem
 ## 2. Em aberto
 
 ### 2.1 Enquadramento da discussão
-Adiado deliberadamente — decidido não forçar uma ponte com a tese de
-doutorado antes de ver os primeiros dados.
-
 **Achados da leitura da tese** ("Avaliação para o Maior Impacto", foco em
 uso de resultados de avaliação de impacto ex post, RRI/RRA nesse sentido
 específico — não trata de OA/APC/métricas de periódico):

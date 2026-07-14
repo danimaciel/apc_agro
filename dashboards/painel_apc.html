@@ -1,0 +1,392 @@
+<meta charset="utf-8">
+<title>apc_agro — panorama do acesso aberto</title>
+<style>
+  :root {
+    --bg: #f2f0e6;
+    --bg-raised: #fbfaf5;
+    --ink: #201f18;
+    --ink-soft: #5a5748;
+    --ink-faint: #8a8672;
+    --line: #dedac8;
+    --accent: #33562e;
+    --accent-soft: #e4e9dd;
+    --gold: #b3822c;
+    --gold-soft: #f2e6cc;
+    --diamond: #3f7a8c;
+    --diamond-soft: #dfeced;
+    --hibrido: #8a4f5e;
+    --hibrido-soft: #f0dfe2;
+    --fechado: #706a5c;
+    --fechado-soft: #e6e2d4;
+    --shadow: 0 1px 2px rgba(32,31,24,0.06), 0 6px 16px rgba(32,31,24,0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16180f;
+      --bg-raised: #1f2216;
+      --ink: #eae6d6;
+      --ink-soft: #b7b19a;
+      --ink-faint: #7d7962;
+      --line: #33362a;
+      --accent: #7fae72;
+      --accent-soft: #26301f;
+      --gold: #d9a648;
+      --gold-soft: #33291a;
+      --diamond: #6cb2c9;
+      --diamond-soft: #172a30;
+      --hibrido: #cc8a9b;
+      --hibrido-soft: #2e1f24;
+      --fechado: #a19b87;
+      --fechado-soft: #262418;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16180f; --bg-raised: #1f2216; --ink: #eae6d6; --ink-soft: #b7b19a;
+    --ink-faint: #7d7962; --line: #33362a; --accent: #7fae72; --accent-soft: #26301f;
+    --gold: #d9a648; --gold-soft: #33291a; --diamond: #6cb2c9; --diamond-soft: #172a30;
+    --hibrido: #cc8a9b; --hibrido-soft: #2e1f24; --fechado: #a19b87; --fechado-soft: #262418;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #f2f0e6; --bg-raised: #fbfaf5; --ink: #201f18; --ink-soft: #5a5748;
+    --ink-faint: #8a8672; --line: #dedac8; --accent: #33562e; --accent-soft: #e4e9dd;
+    --gold: #b3822c; --gold-soft: #f2e6cc; --diamond: #3f7a8c; --diamond-soft: #dfeced;
+    --hibrido: #8a4f5e; --hibrido-soft: #f0dfe2; --fechado: #706a5c; --fechado-soft: #e6e2d4;
+    --shadow: 0 1px 2px rgba(32,31,24,0.06), 0 6px 16px rgba(32,31,24,0.05);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px; }
+  h1, h2, h3 { font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; text-wrap: balance; margin: 0; }
+  .num { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; font-variant-numeric: tabular-nums; }
+
+  header.top { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 8px; }
+  .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: var(--accent); font-weight: 600; }
+  h1 { font-size: 34px; font-weight: 600; margin-top: 6px; color: var(--ink); }
+  .meta { color: var(--ink-soft); font-size: 14px; text-align: right; }
+
+  .lede { max-width: 62ch; color: var(--ink-soft); font-size: 16px; margin: 18px 0 36px; }
+
+  /* KPI strip */
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 40px; }
+  .kpi { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; box-shadow: var(--shadow); }
+  .kpi .v { font-size: 26px; font-weight: 600; }
+  .kpi .l { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+
+  /* Hero split */
+  .hero { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 14px; padding: 28px 28px 24px; box-shadow: var(--shadow); margin-bottom: 40px; }
+  .hero h2 { font-size: 22px; margin-bottom: 4px; }
+  .hero .sub { color: var(--ink-soft); font-size: 14.5px; margin-bottom: 20px; }
+  .splitbar { display: flex; height: 46px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+  .splitbar .seg { display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #fff; }
+  .split-labels { display: flex; justify-content: space-between; margin-top: 10px; font-size: 13px; color: var(--ink-soft); }
+
+  /* section headers */
+  section { margin-bottom: 44px; }
+  .sec-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;}
+  .sec-head h2 { font-size: 21px; }
+  .sec-head .note { font-size: 13px; color: var(--ink-faint); }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--ink-soft); margin-bottom: 14px; }
+  .legend .chip { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  /* category cards */
+  .catgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .catcard { border-radius: 10px; padding: 16px; border: 1px solid var(--line); }
+  .catcard .name { font-weight: 600; font-size: 14.5px; margin-bottom: 6px; }
+  .catcard .big { font-size: 22px; font-weight: 700; }
+  .catcard .small { font-size: 12.5px; color: var(--ink-soft); margin-top: 4px; }
+  .catcard.gold { background: var(--gold-soft); }
+  .catcard.diamond { background: var(--diamond-soft); }
+  .catcard.hibrido { background: var(--hibrido-soft); }
+  .catcard.fechado { background: var(--fechado-soft); }
+
+  /* time series chart */
+  .chart-card { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 14px; padding: 24px 24px 12px; box-shadow: var(--shadow); }
+  svg text { fill: var(--ink-soft); font-size: 11px; font-family: ui-monospace, "SF Mono", Consolas, monospace; }
+  svg .axis-line { stroke: var(--line); stroke-width: 1; }
+  .bar-tip { transition: opacity 0.12s; }
+
+  /* apc price strip */
+  .price-card { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 14px; padding: 24px; box-shadow: var(--shadow); }
+  .price-row { display: flex; align-items: center; gap: 12px; margin: 10px 0; font-size: 13.5px; }
+  .price-row .jname { width: 230px; flex-shrink: 0; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .price-track { flex: 1; height: 8px; background: var(--line); border-radius: 4px; position: relative; }
+  .price-dot { position: absolute; top: 50%; width: 12px; height: 12px; border-radius: 50%; transform: translate(-50%, -50%); border: 2px solid var(--bg-raised); }
+  .price-val { width: 64px; text-align: right; flex-shrink: 0; font-weight: 600; }
+  .price-scale { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-faint); margin-top: 8px; margin-left: 242px; }
+
+  /* tables */
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th { text-align: left; font-weight: 600; color: var(--ink-soft); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  td.n { text-align: right; font-family: ui-monospace, "SF Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge.gold { background: var(--gold-soft); color: var(--gold); }
+  .badge.diamond { background: var(--diamond-soft); color: var(--diamond); }
+  .badge.hibrido { background: var(--hibrido-soft); color: var(--hibrido); }
+  .badge.fechado { background: var(--fechado-soft); color: var(--fechado); }
+
+  /* pending section */
+  .pending { border: 1px dashed var(--line); border-radius: 14px; padding: 28px; text-align: center; color: var(--ink-soft); }
+  .pending .icon { font-size: 26px; margin-bottom: 10px; }
+  .pending h3 { font-size: 17px; color: var(--ink); margin-bottom: 6px; }
+  .pending p { font-size: 13.5px; max-width: 46ch; margin: 0 auto; }
+
+  footer { border-top: 1px solid var(--line); padding-top: 20px; font-size: 12.5px; color: var(--ink-faint); }
+  footer p { margin: 4px 0; }
+
+  @media (max-width: 720px) {
+    .kpis, .catgrid { grid-template-columns: repeat(2, 1fr); }
+    .price-row .jname { width: 120px; }
+    .price-scale { margin-left: 132px; }
+  }
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">
+    Painel: mapeamento do acesso aberto e cobrança de taxa de publicação (APC) na produção científica agrícola brasileira, 2014 a 2024, com base em 193 mil artigos indexados no OpenAlex.
+  </h2>
+
+  <header class="top">
+    <div>
+      <div class="eyebrow">apc_agro · produção agrícola brasileira</div>
+      <h1>Quem paga pelo acesso aberto?</h1>
+    </div>
+    <div class="meta">
+      2014–2024 · OpenAlex (CC0)<br>
+      193.202 artigos · afiliação BR
+    </div>
+  </header>
+
+  <p class="lede">
+    Todo periódico que publica pesquisa agrícola brasileira foi classificado em uma de quatro categorias,
+    cruzando se é de acesso aberto com se cobra do autor para publicar
+    (<em>Article Processing Charge</em> — APC). O retrato: mais da metade da produção circula sem custo
+    de publicação — mas a fração que paga cresce.
+  </p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v num">8.848</div><div class="l">periódicos distintos</div></div>
+    <div class="kpi"><div class="v num">193.202</div><div class="l">artigos, 2014–2024</div></div>
+    <div class="kpi"><div class="v num">4.032</div><div class="l">periódicos Diamond (sem custo, abertos)</div></div>
+    <div class="kpi"><div class="v num">1.028</div><div class="l">periódicos Gold (cobram APC)</div></div>
+  </div>
+
+  <div class="hero">
+    <h2>Com custo de publicação vs. sem custo</h2>
+    <div class="sub">Participação nos 163.571 artigos com periódico classificado (84,7% do total)</div>
+    <div class="splitbar">
+      <div class="seg" style="width:56.7%; background:linear-gradient(90deg, var(--diamond), var(--fechado));">Sem APC · 56,7%</div>
+      <div class="seg" style="width:43.3%; background:linear-gradient(90deg, var(--gold), var(--hibrido));">Com APC · 43,3%</div>
+    </div>
+    <div class="split-labels"><span>Diamond + Fechado</span><span>Gold + Híbrido</span></div>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <h2>As quatro categorias</h2>
+      <div class="note">periódico aberto × periódico cobra APC</div>
+    </div>
+    <div class="legend">
+      <span class="chip"><span class="dot" style="background:var(--diamond)"></span>Diamond — aberto, sem custo</span>
+      <span class="chip"><span class="dot" style="background:var(--gold)"></span>Gold — aberto, com APC</span>
+      <span class="chip"><span class="dot" style="background:var(--hibrido)"></span>Híbrido — fechado, com opção paga</span>
+      <span class="chip"><span class="dot" style="background:var(--fechado)"></span>Fechado — assinatura, sem opção aberta</span>
+    </div>
+    <div class="catgrid">
+      <div class="catcard diamond">
+        <div class="name">Diamond</div>
+        <div class="big num">39,6%</div>
+        <div class="small">64.809 artigos · 4.032 periódicos</div>
+      </div>
+      <div class="catcard gold">
+        <div class="name">Gold</div>
+        <div class="big num">23,8%</div>
+        <div class="small">38.959 artigos · 1.028 periódicos</div>
+      </div>
+      <div class="catcard hibrido">
+        <div class="name">Híbrido</div>
+        <div class="big num">19,5%</div>
+        <div class="small">31.816 artigos · 1.377 periódicos</div>
+      </div>
+      <div class="catcard fechado">
+        <div class="name">Fechado</div>
+        <div class="big num">17,1%</div>
+        <div class="small">27.987 artigos · 2.411 periódicos</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Evolução 2014–2024</h2>
+      <div class="note">artigos por ano, por categoria</div>
+    </div>
+    <div class="chart-card">
+      <svg id="chart-series" viewBox="0 0 980 360" style="width:100%; height:auto;"></svg>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Quanto custa publicar</h2>
+      <div class="note">APC declarado pelos periódicos (USD), amostra dos mais frequentes no corpus</div>
+    </div>
+    <div class="price-card" id="price-card"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Periódicos mais frequentes, por categoria</h2>
+    </div>
+    <div class="tablewrap">
+      <table id="top-table"></table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Mapa temático</h2></div>
+    <div class="pending">
+      <div class="icon">◐</div>
+      <h3>Processando — BERTopic no corpus completo (11 anos)</h3>
+      <p>
+        Os temas de pesquisa (via embeddings multilíngues + clusterização) estão sendo recalculados
+        para cobrir 2014–2024 por inteiro. Esta seção será atualizada com o cruzamento
+        tema × categoria de acesso assim que o processamento terminar.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Fonte:</strong> OpenAlex API (CC0), artigos com ao menos uma afiliação institucional no Brasil, campo "Agricultural and Biological Sciences". Categoria de acesso derivada de <span class="num">apc_usd</span> + <span class="num">is_oa</span> no nível do periódico (não do artigo).</p>
+    <p><strong>Cobertura:</strong> 163.571 de 193.202 artigos (84,7%) têm periódico classificável — o restante está em repositórios, anais de conferência, capítulos de livro ou sem tipo de fonte identificado.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var CAT_COLOR = {
+    Diamond: getVar('--diamond'), Gold: getVar('--gold'),
+    "Híbrido": getVar('--hibrido'), Fechado: getVar('--fechado')
+  };
+  function getVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  var serie = [{"publication_year":2014,"categoria_apc":"Diamond","n_artigos":4028},{"publication_year":2014,"categoria_apc":"Fechado","n_artigos":2169},{"publication_year":2014,"categoria_apc":"Gold","n_artigos":3331},{"publication_year":2014,"categoria_apc":"Híbrido","n_artigos":1883},{"publication_year":2015,"categoria_apc":"Diamond","n_artigos":4492},{"publication_year":2015,"categoria_apc":"Fechado","n_artigos":2851},{"publication_year":2015,"categoria_apc":"Gold","n_artigos":3709},{"publication_year":2015,"categoria_apc":"Híbrido","n_artigos":2023},{"publication_year":2016,"categoria_apc":"Diamond","n_artigos":4955},{"publication_year":2016,"categoria_apc":"Fechado","n_artigos":2813},{"publication_year":2016,"categoria_apc":"Gold","n_artigos":3652},{"publication_year":2016,"categoria_apc":"Híbrido","n_artigos":2489},{"publication_year":2017,"categoria_apc":"Diamond","n_artigos":5950},{"publication_year":2017,"categoria_apc":"Fechado","n_artigos":3187},{"publication_year":2017,"categoria_apc":"Gold","n_artigos":3573},{"publication_year":2017,"categoria_apc":"Híbrido","n_artigos":2615},{"publication_year":2018,"categoria_apc":"Diamond","n_artigos":6936},{"publication_year":2018,"categoria_apc":"Fechado","n_artigos":3206},{"publication_year":2018,"categoria_apc":"Gold","n_artigos":3631},{"publication_year":2018,"categoria_apc":"Híbrido","n_artigos":2915},{"publication_year":2019,"categoria_apc":"Diamond","n_artigos":7139},{"publication_year":2019,"categoria_apc":"Fechado","n_artigos":3477},{"publication_year":2019,"categoria_apc":"Gold","n_artigos":3643},{"publication_year":2019,"categoria_apc":"Híbrido","n_artigos":3081},{"publication_year":2020,"categoria_apc":"Diamond","n_artigos":6377},{"publication_year":2020,"categoria_apc":"Fechado","n_artigos":1699},{"publication_year":2020,"categoria_apc":"Gold","n_artigos":3631},{"publication_year":2020,"categoria_apc":"Híbrido","n_artigos":3583},{"publication_year":2021,"categoria_apc":"Diamond","n_artigos":7612},{"publication_year":2021,"categoria_apc":"Fechado","n_artigos":2427},{"publication_year":2021,"categoria_apc":"Gold","n_artigos":3668},{"publication_year":2021,"categoria_apc":"Híbrido","n_artigos":3725},{"publication_year":2022,"categoria_apc":"Diamond","n_artigos":6162},{"publication_year":2022,"categoria_apc":"Fechado","n_artigos":1946},{"publication_year":2022,"categoria_apc":"Gold","n_artigos":3423},{"publication_year":2022,"categoria_apc":"Híbrido","n_artigos":3089},{"publication_year":2023,"categoria_apc":"Diamond","n_artigos":6015},{"publication_year":2023,"categoria_apc":"Fechado","n_artigos":2132},{"publication_year":2023,"categoria_apc":"Gold","n_artigos":3281},{"publication_year":2023,"categoria_apc":"Híbrido","n_artigos":3014},{"publication_year":2024,"categoria_apc":"Diamond","n_artigos":5143},{"publication_year":2024,"categoria_apc":"Fechado","n_artigos":2080},{"publication_year":2024,"categoria_apc":"Gold","n_artigos":3417},{"publication_year":2024,"categoria_apc":"Híbrido","n_artigos":3399}];
+
+  var years = [...new Set(serie.map(d => d.publication_year))].sort();
+  var cats = ["Fechado", "Híbrido", "Gold", "Diamond"];
+
+  var W = 980, H = 360, padL = 44, padB = 30, padT = 10, padR = 10;
+  var plotW = W - padL - padR, plotH = H - padT - padB;
+  var maxTotal = Math.max(...years.map(y => {
+    return serie.filter(d => d.publication_year === y).reduce((s, d) => s + d.n_artigos, 0);
+  }));
+  var yMax = Math.ceil(maxTotal / 2000) * 2000;
+  var bw = plotW / years.length * 0.62;
+  var gap = plotW / years.length;
+
+  var svg = document.getElementById('chart-series');
+  var ns = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs) {
+    var e = document.createElementNS(ns, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  // gridlines + y labels
+  [0, 0.25, 0.5, 0.75, 1].forEach(function (f) {
+    var y = padT + plotH * (1 - f);
+    svg.appendChild(el('line', { x1: padL, x2: W - padR, y1: y, y2: y, class: 'axis-line' }));
+    var t = el('text', { x: padL - 8, y: y + 3, 'text-anchor': 'end' });
+    t.textContent = Math.round(yMax * f).toLocaleString('pt-BR');
+    svg.appendChild(t);
+  });
+
+  years.forEach(function (yr, i) {
+    var x0 = padL + i * gap + (gap - bw) / 2;
+    var yBase = padT + plotH;
+    var yearData = serie.filter(d => d.publication_year === yr);
+    var cum = 0;
+    cats.forEach(function (cat) {
+      var d = yearData.find(d => d.categoria_apc === cat);
+      var v = d ? d.n_artigos : 0;
+      var h = (v / yMax) * plotH;
+      var y = yBase - cum - h;
+      var rect = el('rect', {
+        x: x0, y: y, width: bw, height: Math.max(h, 0),
+        fill: CAT_COLOR[cat], class: 'bar-tip'
+      });
+      var title = el('title', {});
+      title.textContent = cat + ' · ' + yr + ': ' + v.toLocaleString('pt-BR') + ' artigos';
+      rect.appendChild(title);
+      svg.appendChild(rect);
+      cum += h;
+    });
+    var xl = el('text', { x: x0 + bw / 2, y: yBase + 16, 'text-anchor': 'middle' });
+    xl.textContent = yr;
+    svg.appendChild(xl);
+  });
+
+  // --- price strip ---
+  var priceData = [
+    { journal: "Revista Brasileira de Engenharia Agrícola e Ambiental", apc: 34, cat: "Gold" },
+    { journal: "Revista Caatinga", apc: 57, cat: "Gold" },
+    { journal: "Semina Ciências Agrárias", apc: 133, cat: "Gold" },
+    { journal: "Ciência Rural", apc: 133, cat: "Gold" },
+    { journal: "Revista Brasileira de Fruticultura", apc: 266, cat: "Gold" },
+    { journal: "Bioscience Journal", apc: 500, cat: "Gold" },
+    { journal: "Arquivo Brasileiro de Medicina Veterinária e Zootecnia", apc: 800, cat: "Gold" },
+    { journal: "PLoS ONE", apc: 1805, cat: "Gold" },
+    { journal: "Livestock Science", apc: 2520, cat: "Híbrido" },
+    { journal: "Neotropical Entomology", apc: 2990, cat: "Híbrido" },
+    { journal: "Brazilian Journal of Microbiology", apc: 2890, cat: "Híbrido" },
+    { journal: "Tropical Animal Health and Production", apc: 3590, cat: "Híbrido" },
+    { journal: "Journal of Animal Science", apc: 4000, cat: "Híbrido" },
+    { journal: "Food Research International", apc: 4030, cat: "Híbrido" },
+    { journal: "Food Chemistry", apc: 4300, cat: "Híbrido" }
+  ];
+  var maxApc = Math.max(...priceData.map(d => d.apc));
+  var priceCard = document.getElementById('price-card');
+  priceData.sort(function (a, b) { return a.apc - b.apc; }).forEach(function (d) {
+    var row = document.createElement('div');
+    row.className = 'price-row';
+    var pct = (d.apc / maxApc) * 100;
+    row.innerHTML =
+      '<div class="jname">' + d.journal + '</div>' +
+      '<div class="price-track"><div class="price-dot" style="left:' + pct + '%; background:' + CAT_COLOR[d.cat] + ';"></div></div>' +
+      '<div class="price-val num">US$ ' + d.apc.toLocaleString('pt-BR') + '</div>';
+    priceCard.appendChild(row);
+  });
+  var scale = document.createElement('div');
+  scale.className = 'price-scale';
+  scale.innerHTML = '<span>US$ 0</span><span>US$ ' + maxApc.toLocaleString('pt-BR') + '</span>';
+  priceCard.appendChild(scale);
+
+  // --- top periodicos table ---
+  var topData = [{"categoria_apc":"Diamond","journal":"Research Society and Development","n_artigos_corpus":4149},{"categoria_apc":"Diamond","journal":"Brazilian Journal of Development","n_artigos_corpus":1494},{"categoria_apc":"Diamond","journal":"Pesquisa Agropecuária Brasileira","n_artigos_corpus":1045},{"categoria_apc":"Diamond","journal":"Journal of Agricultural Science","n_artigos_corpus":984},{"categoria_apc":"Fechado","journal":"Zootaxa","n_artigos_corpus":1743},{"categoria_apc":"Fechado","journal":"Phytotaxa","n_artigos_corpus":1425},{"categoria_apc":"Fechado","journal":"Cadernos de Agroecologia","n_artigos_corpus":850},{"categoria_apc":"Fechado","journal":"Genetics and Molecular Research","n_artigos_corpus":633},{"categoria_apc":"Gold","journal":"Semina Ciências Agrárias","n_artigos_corpus":1963,"apc_usd":133},{"categoria_apc":"Gold","journal":"Ciência Rural","n_artigos_corpus":1468,"apc_usd":133},{"categoria_apc":"Gold","journal":"Revista Brasileira de Engenharia Agrícola e Ambiental","n_artigos_corpus":1223,"apc_usd":34},{"categoria_apc":"Gold","journal":"Revista Caatinga","n_artigos_corpus":889,"apc_usd":57},{"categoria_apc":"Híbrido","journal":"Journal of Animal Science","n_artigos_corpus":816,"apc_usd":4000},{"categoria_apc":"Híbrido","journal":"Food Research International","n_artigos_corpus":705,"apc_usd":4030},{"categoria_apc":"Híbrido","journal":"Food Science and Technology","n_artigos_corpus":589,"apc_usd":750},{"categoria_apc":"Híbrido","journal":"Tropical Animal Health and Production","n_artigos_corpus":532,"apc_usd":3590}];
+
+  var badgeClass = { Diamond: 'diamond', Gold: 'gold', "Híbrido": 'hibrido', Fechado: 'fechado' };
+  var table = document.getElementById('top-table');
+  var thead = '<thead><tr><th>Categoria</th><th>Periódico</th><th style="text-align:right">Artigos</th><th style="text-align:right">APC</th></tr></thead>';
+  var rows = topData.map(function (d) {
+    return '<tr><td><span class="badge ' + badgeClass[d.categoria_apc] + '">' + d.categoria_apc + '</span></td>' +
+      '<td>' + d.journal + '</td>' +
+      '<td class="n">' + d.n_artigos_corpus.toLocaleString('pt-BR') + '</td>' +
+      '<td class="n">' + (d.apc_usd ? 'US$ ' + d.apc_usd.toLocaleString('pt-BR') : '—') + '</td></tr>';
+  }).join('');
+  table.innerHTML = thead + '<tbody>' + rows + '</tbody>';
+})();
+</script>

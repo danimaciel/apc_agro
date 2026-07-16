@@ -86,7 +86,7 @@ Brasil/Embrapa.
 - Bibliometria descritiva sobre metadados do OpenAlex (`Works` e `Sources`).
 - Classificação temática não supervisionada (embeddings + clustering / topic
   modeling sobre títulos e resumos), reaproveitando o pipeline já validado
-  no artigo Q1 da tese de Daniela.
+  no artigo Q1 da tese.
 - Cruzamento dos clusters temáticos com as 4 categorias de acesso/APC.
 
 ### 1.6 Fonte de dados e arquitetura de coleta

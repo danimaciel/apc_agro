@@ -2,17 +2,17 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Onde publicar — periódicos de agro</title>
-<meta name="description" content="Busque periódicos de agro onde publicar em acesso aberto não custa nada — Diamond e cobertos por acordo CAPES.">
+<title>Onde publicar - periódicos de agro</title>
+<meta name="description" content="Busque periódicos de agro onde publicar em acesso aberto não custa nada - Diamond e cobertos por acordo CAPES.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://danimaciel.github.io/apc_agro/dashboards/onde_publicar.html">
-<meta property="og:title" content="Onde publicar sem pagar — periódicos de agro">
-<meta property="og:description" content="Busque entre os periódicos de agro onde publicar em acesso aberto não custa nada para um autor vinculado a instituição brasileira — Diamond e cobertos por acordo CAPES.">
+<meta property="og:title" content="Onde publicar sem pagar - periódicos de agro">
+<meta property="og:description" content="Busque entre os periódicos de agro onde publicar em acesso aberto não custa nada para um autor vinculado a instituição brasileira - Diamond e cobertos por acordo CAPES.">
 <meta property="og:image" content="https://danimaciel.github.io/apc_agro/dashboards/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Onde publicar sem pagar — periódicos de agro">
+<meta name="twitter:title" content="Onde publicar sem pagar - periódicos de agro">
 <meta name="twitter:description" content="Busque entre os periódicos de agro onde publicar em acesso aberto não custa nada para um autor vinculado a instituição brasileira.">
 <meta name="twitter:image" content="https://danimaciel.github.io/apc_agro/dashboards/og-image.png">
 <style>
@@ -156,7 +156,8 @@
       <select id="sort-by">
         <option value="popularidade">Ordenar: mais usados por autores BR</option>
         <option value="citacao">Ordenar: mais citados (h-index)</option>
-        <option value="nome">Ordenar: A–Z</option>
+        <option value="valor">Ordenar: menor valor de APC</option>
+        <option value="nome">Ordenar: A-Z</option>
       </select>
     </div>
   </div>
@@ -170,7 +171,7 @@
   <div class="empty" id="empty-state" style="display:none;">Nenhum periódico encontrado com esses filtros.</div>
 
   <footer>
-    <p><strong>Fonte:</strong> OpenAlex API (CC0) + Portal de Periódicos CAPES (acordos transformativos, consultados em julho de 2026). Lista restrita a periódicos Diamond (nunca cobram APC) e periódicos Gold/Híbrido cobertos por acordo CAPES — não inclui periódicos Fechado (sem opção de acesso aberto) nem Gold/Híbrido sem cobertura (custam do bolso do autor). Para ver o panorama completo com todas as categorias, veja o <a href="painel_apc.html">painel</a>.</p>
+    <p><strong>Fonte:</strong> OpenAlex API (CC0) + Portal de Periódicos CAPES (acordos transformativos, consultados em julho de 2026). Lista restrita a periódicos Diamond (nunca cobram APC) e periódicos Gold/Híbrido cobertos por acordo CAPES - não inclui periódicos Fechado (sem opção de acesso aberto) nem Gold/Híbrido sem cobertura (custam do bolso do autor). Para ver o panorama completo com todas as categorias, veja o <a href="painel_apc.html">painel</a>.</p>
     <p>Projeto <a href="https://github.com/danimaciel/apc_agro" target="_blank" rel="noreferrer">apc_agro</a> - mapeamento de acesso aberto na produção agrícola brasileira.</p>
   </footer>
 </div>
@@ -209,6 +210,7 @@
   function sortFn(a, b, mode) {
     if (mode === 'citacao') return (b.h_index || 0) - (a.h_index || 0);
     if (mode === 'nome') return a.titulo.localeCompare(b.titulo);
+    if (mode === 'valor') return (a.apc_usd || 0) - (b.apc_usd || 0);
     return (b.n_artigos_corpus || 0) - (a.n_artigos_corpus || 0);
   }
 
@@ -222,7 +224,7 @@
 
     var total = filtered.length;
     document.getElementById('result-count').textContent = total.toLocaleString('pt-BR') + ' periódico' + (total === 1 ? '' : 's') + ' encontrado' + (total === 1 ? '' : 's');
-    document.getElementById('result-note').textContent = total > MAX_RENDER ? 'mostrando os ' + MAX_RENDER + ' primeiros — refine a busca para ver mais' : '';
+    document.getElementById('result-note').textContent = total > MAX_RENDER ? 'mostrando os ' + MAX_RENDER + ' primeiros - refine a busca para ver mais' : '';
 
     var container = document.getElementById('results');
     container.innerHTML = '';
@@ -236,7 +238,7 @@
       if (d.categoria === 'Diamond') {
         apcHtml = '<div class="price">Sem custo</div>';
       } else {
-        apcHtml = '<div class="price waived">US$ ' + (d.apc_usd != null ? d.apc_usd.toLocaleString('pt-BR') : '—') + '</div>' +
+        apcHtml = '<div class="price waived">US$ ' + (d.apc_usd != null ? d.apc_usd.toLocaleString('pt-BR') : '-') + '</div>' +
                   '<div class="capes-note">✓ CAPES (' + d.capes_editora + ')</div>';
       }
 
@@ -251,8 +253,8 @@
         '</div>' +
         '<span class="badge ' + CAT_COLOR[d.categoria] + '">' + d.categoria + '</span>' +
         '<div class="metrics">' +
-          '<div class="metric"><div class="v num">' + (d.h_index != null ? d.h_index : '—') + '</div><div class="l">h-index</div></div>' +
-          '<div class="metric"><div class="v num">' + (d.n_artigos_corpus != null ? d.n_artigos_corpus : '—') + '</div><div class="l">uso BR</div></div>' +
+          '<div class="metric"><div class="v num">' + (d.h_index != null ? d.h_index : '-') + '</div><div class="l">h-index</div></div>' +
+          '<div class="metric"><div class="v num">' + (d.n_artigos_corpus != null ? d.n_artigos_corpus : '-') + '</div><div class="l">uso BR</div></div>' +
         '</div>' +
         '<div class="apc-cell">' + apcHtml + '</div>';
       container.appendChild(card);

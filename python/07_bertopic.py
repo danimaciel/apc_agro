@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Modelagem tematica -- BERTopic (embeddings de sentenca multilingues + UMAP +
-HDBSCAN + c-TF-IDF). Ver docs/01_desenho_pesquisa.md secao 1.5/2.1 e
-docs/02_metodo.md.
+HDBSCAN + c-TF-IDF). 
 
-Unico script Python do projeto -- todo o resto e R (openalexR). Justificado
-porque nao ha equivalente maduro de BERTopic/SBERT em R no momento.
+Unico script Python do projeto -- todo o resto e R (openalexR). 
 
 Reexecutavel: sempre le o corpus mais recente em data/processed/corpus_tematico.csv.
 """
